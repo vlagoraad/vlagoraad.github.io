@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentina Lago Raad - Engenharia de Software</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --paper: #FFF8E7;
+            --ink: #2B1810;
+            --burnt-orange: #D86C3C;
+            --rust: #A0522D;
+            --sage: #8B9B7E;
+            --cream: #F5E6D3;
+            --charcoal: #3D3028;
+            --gold: #C9A961;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Textura de papel */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139, 69, 19, 0.03) 2px, rgba(139, 69, 19, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(139, 69, 19, 0.03) 2px, rgba(139, 69, 19, 0.03) 4px);
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.4;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 248, 231, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 3px solid var(--ink);
+            box-shadow: 0 4px 0 rgba(43, 24, 16, 0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: -1px;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '◆';
+            color: var(--burnt-orange);
+            margin-left: 8px;
+            font-size: 12px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            font-family: 'Space Mono', monospace;
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-links a::before {
+            content: '▸';
+            position: absolute;
+            left: -18px;
+            opacity: 0;
+            color: var(--burnt-orange);
+            transition: opacity 0.2s;
+        }
+
+        .nav-links a:hover::before {
+            opacity: 1;
+        }
+
+        .nav-links a:hover {
+            color: var(--burnt-orange);
+            transform: translateX(5px);
+        }
+
+        /* Hero com efeito de frame */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 140px 48px 80px;
+            position: relative;
+            background: 
+                linear-gradient(135deg, var(--cream) 0%, var(--paper) 50%, var(--cream) 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 40px;
+            border: 4px solid var(--ink);
+            pointer-events: none;
+            box-shadow: 
+                inset 0 0 0 8px var(--paper),
+                inset 0 0 0 12px var(--ink);
+        }
+
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-frame {
+            opacity: 0;
+            animation: frameByFrame 0.8s steps(4) forwards;
+        }
+
+        @keyframes frameByFrame {
+            0% { opacity: 0; transform: translateY(20px) rotate(-2deg); }
+            25% { opacity: 0.3; transform: translateY(15px) rotate(-1deg); }
+            50% { opacity: 0.6; transform: translateY(10px) rotate(0deg); }
+            75% { opacity: 0.85; transform: translateY(5px) rotate(0.5deg); }
+            100% { opacity: 1; transform: translateY(0) rotate(0deg); }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 64px;
+            font-weight: 900;
+            color: var(--ink);
+            margin-bottom: 24px;
+            line-height: 1.1;
+            text-shadow: 3px 3px 0 rgba(216, 108, 60, 0.2);
+        }
+
+        .hero .subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: 18px;
+            color: var(--rust);
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--charcoal);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--burnt-orange);
+            color: var(--paper);
+            padding: 16px 40px;
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+            border: 3px solid var(--ink);
+            box-shadow: 5px 5px 0 var(--ink);
+            transition: all 0.15s steps(2);
+            position: relative;
+        }
+
+        .cta-button:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 3px 3px 0 var(--ink);
+        }
+
+        .cta-button:active {
+            transform: translate(5px, 5px);
+            box-shadow: 0 0 0 var(--ink);
+        }
+
+        /* Sections */
+        section {
+            padding: 120px 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .section-frame {
+            opacity: 1;
+            transform: translateY(30px);
+            transition: none;
+        }
+
+        .section-frame.visible {
+            animation: slideInFrames 0.6s steps(3) forwards;
+        }
+
+        @keyframes slideInFrames {
+            0% { opacity: 0; transform: translateY(30px) scale(0.98); }
+            33% { opacity: 0.4; transform: translateY(20px) scale(0.99); }
+            66% { opacity: 0.7; transform: translateY(10px) scale(0.995); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            font-weight: 900;
+            color: var(--ink);
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: var(--burnt-orange);
+            box-shadow: 0 2px 0 var(--ink);
+        }
+
+        /* Sobre - estilo caderno */
+        .sobre-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--cream);
+            padding: 48px;
+            border: 3px solid var(--ink);
+            box-shadow: 8px 8px 0 rgba(43, 24, 16, 0.15);
+            position: relative;
+        }
+
+        .sobre-content::before {
+            content: '';
+            position: absolute;
+            left: 60px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--rust);
+            opacity: 0.3;
+        }
+
+        .sobre-content p {
+            font-size: 18px;
+            margin-bottom: 24px;
+            padding-left: 40px;
+        }
+
+        .destaque {
+            background: var(--burnt-orange);
+            color: var(--paper);
+            padding: 24px;
+            margin: 32px 0;
+            border-left: 6px solid var(--ink);
+            box-shadow: 4px 4px 0 rgba(43, 24, 16, 0.2);
+            font-weight: 500;
+        }
+
+        /* Experiência - timeline artesanal */
+        .experiencia-list {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .experiencia-list::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: repeating-linear-gradient(
+                0deg,
+                var(--ink),
+                var(--ink) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+        }
+
+        .experiencia-item {
+            background: var(--cream);
+            padding: 32px;
+            margin-bottom: 40px;
+            border: 3px solid var(--ink);
+            box-shadow: 6px 6px 0 rgba(43, 24, 16, 0.1);
+            position: relative;
+            transition: all 0.2s steps(2);
+        }
+
+        .experiencia-item::before {
+            content: '●';
+            position: absolute;
+            left: -50px;
+            top: 40px;
+            font-size: 24px;
+            color: var(--burnt-orange);
+            background: var(--paper);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid var(--ink);
+            border-radius: 50%;
+        }
+
+        .experiencia-item:hover {
+            transform: translateX(5px);
+            box-shadow: 10px 10px 0 rgba(43, 24, 16, 0.15);
+        }
+
+        .experiencia-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .experiencia-periodo {
+            font-family: 'Space Mono', monospace;
+            color: var(--rust);
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 12px;
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        /* Projetos - cards recortados */
+        .projetos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .projeto-card {
+            background: var(--cream);
+            padding: 36px;
+            border: 3px solid var(--ink);
+            position: relative;
+            transition: all 0.2s steps(2);
+            clip-path: polygon(
+                0 12px, 12px 0, 
+                calc(100% - 12px) 0, 100% 12px,
+                100% calc(100% - 12px), calc(100% - 12px) 100%,
+                12px 100%, 0 calc(100% - 12px)
+            );
+        }
+
+        .projeto-card::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: var(--burnt-orange);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.2s steps(2);
+        }
+
+        .projeto-card:hover::before {
+            opacity: 0.3;
+        }
+
+        .projeto-card:hover {
+            transform: rotate(-1deg) scale(1.02);
+        }
+
+        .projeto-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--ink);
+            margin-bottom: 16px;
+        }
+
+        .projeto-card p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .projeto-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: var(--sage);
+            color: var(--paper);
+            padding: 6px 14px;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            border: 2px solid var(--ink);
+            letter-spacing: 0.5px;
+        }
+
+        .projeto-link {
+            font-family: 'Space Mono', monospace;
+            color: var(--burnt-orange);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            position: relative;
+            transition: all 0.2s steps(2);
+        }
+
+        .projeto-link::after {
+            content: ' →';
+            transition: transform 0.2s steps(2);
+            display: inline-block;
+        }
+
+        .projeto-link:hover::after {
+            transform: translateX(5px);
+        }
+
+        /* Contato - estilo cartão postal */
+        .contato-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contato-item {
+            background: var(--cream);
+            padding: 32px;
+            text-align: center;
+            border: 3px solid var(--ink);
+            box-shadow: 5px 5px 0 rgba(43, 24, 16, 0.15);
+            position: relative;
+            transition: all 0.2s steps(2);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .contato-item::after {
+            content: '✉';
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 20px;
+            opacity: 0.3;
+        }
+
+        .contato-item:hover {
+            transform: translateY(-8px) rotate(2deg);
+            box-shadow: 8px 12px 0 rgba(43, 24, 16, 0.2);
+        }
+
+        .contato-icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+            display: block;
+            filter: grayscale(100%);
+            transition: filter 0.2s steps(2);
+        }
+
+        .contato-item:hover .contato-icon {
+            filter: grayscale(0%);
+        }
+
+        .contato-item a {
+            font-family: 'Space Mono', monospace;
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .contato-item p {
+            font-size: 14px;
+            color: var(--rust);
+            font-weight: 500;
+        }
+
+        /* Footer - estilo carimbo */
+        footer {
+            background: var(--charcoal);
+            color: var(--cream);
+            text-align: center;
+            padding: 48px;
+            border-top: 4px solid var(--ink);
+            position: relative;
+        }
+
+        footer::before {
+            content: '✦';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: var(--burnt-orange);
+            background: var(--charcoal);
+            padding: 0 20px;
+        }
+
+        footer p {
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Elementos decorativos */
+        .deco-corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--burnt-orange);
+        }
+
+        .deco-corner.top-left {
+            top: 20px;
+            left: 20px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .deco-corner.top-right {
+            top: 20px;
+            right: 20px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px 24px;
+            }
+
+            .nav-links {
+                gap: 24px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            h2 {
+                font-size: 38px;
+            }
+
+            section {
+                padding: 80px 24px;
+            }
+
+            .hero::before {
+                inset: 20px;
+            }
+
+            .sobre-content {
+                padding: 32px 24px;
+            }
+
+            .sobre-content::before {
+                left: 30px;
+            }
+
+            .sobre-content p {
+                padding-left: 20px;
+            }
+
+            .experiencia-list {
+                padding-left: 40px;
+            }
+
+            .projetos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animação de entrada suave com frames */
+        .fade-in-frame {
+            opacity: 0;
+            animation: fadeInFrame 0.8s steps(4) forwards;
+        }
+
+        @keyframes fadeInFrame {
+            0% { opacity: 0; }
+            25% { opacity: 0.25; }
+            50% { opacity: 0.5; }
+            75% { opacity: 0.75; }
+            100% { opacity: 1; }
+        }
+
+        /* Cursor customizado estilo lápis */
+        body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="%23D86C3C" opacity="0.3"/><circle cx="10" cy="10" r="3" fill="%232B1810"/></svg>') 10 10, auto;
+        }
+
+        a, button {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%23D86C3C" opacity="0.5"/><circle cx="12" cy="12" r="4" fill="%232B1810"/></svg>') 12 12, pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">VALENTINA LAGO</div>
+            <ul class="nav-links">
+                <li><a href="#sobre">SOBRE</a></li>
+                <li><a href="#experiencia">EXPERIÊNCIA</a></li>
+                <li><a href="#projetos">PROJETOS</a></li>
+                <li><a href="#contato">CONTATO</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content hero-frame">
+            <h1>Construindo software<br>frame a frame</h1>
+            <p class="subtitle">ENGENHEIRA • PESQUISADORA • CRIADORA</p>
+            <p>Acadêmica de Engenharia de Software na PUCPR combinando formação internacional, pesquisa em tecnologias imersivas e paixão por compartilhar conhecimento.</p>
+            <a href="#projetos" class="cta-button">VER PROJETOS</a>
+        </div>
+    </section>
+
+    <!-- Sobre -->
+    <section id="sobre" class="section-frame">
+        <div class="deco-corner top-left"></div>
+        <div class="deco-corner top-right"></div>
+        <h2>Sobre Mim</h2>
+        <div class="sobre-content">
+            <p>Olá! Sou Valentina, acadêmica de Engenharia de Software na PUCPR (3º período) com dupla diplomação internacional pela Kent State University. Minha trajetória une tecnologia, gestão empresarial e pesquisa aplicada, sempre buscando excelência e inovação.</p>
+            
+            <p>Atualmente, atuo como <strong>pesquisadora de iniciação científica</strong> no Centro de Realidade Estendida (XR) da PUCPR, investigando metodologias e práticas de desenvolvimento de tecnologias imersivas (VR/AR/XR). Também sou <strong>monitora</strong> das disciplinas de Modelagem de Processos, Engenharia de Requisitos e Qualidade de Software.</p>
+            
+            <p>Minha formação multi-disciplinar pela Kent State University, combinada com conhecimentos práticos em <strong>PHP, Java, JavaScript, HTML/CSS, MySQL</strong> e fundamentos sólidos de programação orientada a objetos, me permite ter uma visão integrada entre tecnologia e estratégia empresarial.</p>
+            
+            <p>Quando não estou programando ou pesquisando, você pode me encontrar assistindo filmes de Halloween, explorando técnicas de stop motion ou perdida em um bom livro. Essas paixões influenciam minha abordagem ao desenvolvimento: <strong>criatividade, paciência e atenção meticulosa aos detalhes</strong>.</p>
+        </div>
+    </section>
+
+    <!-- Experiência -->
+    <section id="experiencia" class="section-frame">
+        <h2>Experiência</h2>
+        <div class="experiencia-list">
+            <div class="experiencia-item">
+                <h3>Aluna Pesquisadora - Iniciação Científica</h3>
+                <span class="experiencia-periodo">AGOSTO 2025 - PRESENTE</span>
+                <p><strong>Centro de Realidade Estendida (XR) - PUCPR</strong></p>
+                <p>Desenvolvimento de pesquisa sobre processos de desenvolvimento de tecnologias imersivas (VR/AR/XR). Realizo mapeamento de processos, análise de dados, revisão bibliográfica e documentação científica, aprofundando conhecimentos em gestão de processos complexos e inovação tecnológica.</p>
+            </div>
+
+            <div class="experiencia-item">
+                <h3>Monitora de Engenharia de Software</h3>
+                <span class="experiencia-periodo">MARÇO 2025 - PRESENTE</span>
+                <p><strong>PUCPR</strong></p>
+                <p>Monitora das disciplinas de Modelagem de Processos, Engenharia de Requisitos e Qualidade de Software. Auxilio estudantes na compreensão de conceitos fundamentais, conduzo sessões de tutoria e elaboro materiais de apoio sobre levantamento de requisitos, técnicas de modelagem (BPMN, UML) e estratégias de teste.</p>
+            </div>
+
+            <div class="experiencia-item">
+                <h3>Assistente Administrativa</h3>
+                <span class="experiencia-periodo">MARÇO 2023 - PRESENTE</span>
+                <p><strong>Holy Home Store</strong></p>
+                <p>Responsável por gestão de estoque, lançamentos financeiros e controle de inventário. Garantia de precisão em registros contábeis, realização de inventários e conciliações financeiras, contribuindo para a eficiência operacional.</p>
+            </div>
+
+            <div class="experiencia-item">
+                <h3>Voluntária em Projeto Social</h3>
+                <span class="experiencia-periodo">2024</span>
+                <p><strong>Escola Menino Jesus</strong></p>
+                <p>Participação ativa em projeto focado na educação de pessoas com deficiência, desenvolvendo competências de trabalho em equipe, empatia e responsabilidade comunitária.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projetos -->
+    <section id="projetos" class="section-frame">
+        <h2>Projetos</h2>
+        <div class="projetos-grid">
+            <div class="projeto-card">
+                <h3>CreativeQuest 🎨</h3>
+                <p>App iOS que transforma criatividade em hábito diário para profissionais de tecnologia. Desafios rápidos de 5-15 minutos em 6 categorias com sistema de streak, conquistas e reflexões pessoais.</p>
+                <div class="projeto-tags">
+                    <span class="tag">SWIFT</span>
+                    <span class="tag">SWIFTUI</span>
+                    <span class="tag">iOS</span>
+                </div>
+                <p style="margin-top: 12px; font-size: 14px; color: var(--rust);"><strong>Projeto Final SwiftStart 2025</strong></p>
+                <a href="https://github.com/vlagoraad" class="projeto-link">VER PROJETO</a>
+            </div>
+
+            <div class="projeto-card">
+                <h3>Teaching-Search 👩‍🏫</h3>
+                <p>Plataforma web full stack para capacitação de professores na educação inclusiva e conexão com vagas compatíveis. Sistema completo com módulos educacionais, recrutamento e gestão.</p>
+                <div class="projeto-tags">
+                    <span class="tag">PHP</span>
+                    <span class="tag">MYSQL</span>
+                    <span class="tag">FULL STACK</span>
+                </div>
+                <p style="margin-top: 12px; font-size: 14px; color: var(--rust);"><strong>Equipe ImpactPRO | PUCPR</strong></p>
+                <a href="https://github.com/vlagoraad" class="projeto-link">VER PROJETO</a>
+            </div>
+            
+            <div class="projeto-card">
+                <h3>Monitor de Museus 🏛️</h3>
+                <p>Sistema IoT para prevenção de incêndios e preservação de acervos. Dispositivo ESP32 com sensor DHT-11, alertas automáticos e controle remoto via web.</p>
+                <div class="projeto-tags">
+                    <span class="tag">ESP32</span>
+                    <span class="tag">IoT</span>
+                    <span class="tag">EMBARCADOS</span>
+                </div>
+                <p style="margin-top: 12px; font-size: 14px; color: var(--rust);"><strong>Museu PUCPR</strong></p>
+                <a href="https://github.com/vlagoraad" class="projeto-link">VER PROJETO</a>
+            </div>
+
+            <div class="projeto-card">
+                <h3>Pesquisa em XR 🥽</h3>
+                <p>Iniciação científica investigando metodologias e práticas de desenvolvimento de tecnologias imersivas (VR/AR/XR). Mapeamento de processos e documentação científica.</p>
+                <div class="projeto-tags">
+                    <span class="tag">XR/VR/AR</span>
+                    <span class="tag">PESQUISA</span>
+                    <span class="tag">BPMN</span>
+                </div>
+                <p style="margin-top: 12px; font-size: 14px; color: var(--rust);"><strong>Centro XR - PUCPR</strong></p>
+            </div>
+        </div>
+    </section>
+
+<!-- Contato -->
+<section id="contato" class="section-frame">
+    <h2>Contato</h2>
+
+    <div class="contato-grid">
+        <!-- Email -->
+        <a 
+            href="mailto:valentinalagoraad@gmail.com" 
+            class="contato-item"
+        >
+            <span class="contato-icon">📧</span>
+            <span class="contato-link-text">
+                E-mail
+            </span>
+            <p>Email profissional</p>
+        </a>
+
+        <!-- LinkedIn -->
+        <a 
+            href="https://www.linkedin.com/in/valentinalagoraad"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contato-item"
+        >
+            <span class="contato-icon">💼</span>
+            <span class="contato-link-text">
+                LinkedIn
+            </span>
+            <p>Perfil profissional</p>
+        </a>
+
+        <!-- GitHub -->
+        <a 
+            href="https://github.com/vlagoraad"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contato-item"
+        >
+            <span class="contato-icon">💻</span>
+            <span class="contato-link-text">
+                GitHub
+            </span>
+            <p>Repositórios e projetos</p>
+        </a>
+
+        <!-- Instagram -->
+        <a 
+            href="https://www.instagram.com/valentinalagoraad"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contato-item"
+        >
+            <span class="contato-icon">📸</span>
+            <span class="contato-link-text">
+                Instagram
+            </span>
+            <p>Bastidores e criatividade</p>
+        </a>
+    </div>
+</section>
+
+</body>
+</html>
